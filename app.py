@@ -33,7 +33,7 @@ def add_workout():
     reps = data["reps"]
     sets = data["sets"]
 
-    next_reps = get_next_progress(exercise, reps)
+    recommendation = coach_recommendation(reps, sets)
 
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
@@ -44,10 +44,7 @@ def add_workout():
     conn.commit()
     conn.close()
 
-    return jsonify({
-        "status": "ok",
-        "next_recommended_reps": next_reps
-    })
+    return jsonify(recommendation)
 
 @app.route("/stats")
 def stats():
@@ -72,6 +69,32 @@ def get_next_progress(exercise, reps):
         return reps + 1
     else:
         return reps
+
+def coach_recommendation(reps, sets):
+    reps = int(reps)
+    sets = int(sets)
+
+    # logique simple mais efficace
+    if reps >= 15:
+        return {
+            "message": "🔥 Niveau facile détecté → on augmente l'intensité",
+            "next_reps": reps + 2,
+            "advice": "Ajoute du tempo lent ou plus de difficulté"
+        }
+
+    elif reps >= 8:
+        return {
+            "message": "💪 Bon niveau → progression stable",
+            "next_reps": reps + 1,
+            "advice": "Continue comme ça, focus exécution propre"
+        }
+
+    else:
+        return {
+            "message": "⚠️ Niveau difficile → stabilisation",
+            "next_reps": reps,
+            "advice": "Reste sur ce volume et améliore la technique"
+        }
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
