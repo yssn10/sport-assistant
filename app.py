@@ -33,14 +33,21 @@ def add_workout():
     reps = data["reps"]
     sets = data["sets"]
 
+    next_reps = get_next_progress(exercise, reps)
+
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
-    c.execute("INSERT INTO workouts (exercise, reps, sets) VALUES (?, ?, ?)",
-              (exercise, reps, sets))
+    c.execute(
+        "INSERT INTO workouts (exercise, reps, sets) VALUES (?, ?, ?)",
+        (exercise, reps, sets)
+    )
     conn.commit()
     conn.close()
 
-    return jsonify({"status": "ok"})
+    return jsonify({
+        "status": "ok",
+        "next_recommended_reps": next_reps
+    })
 
 @app.route("/stats")
 def stats():
@@ -51,6 +58,20 @@ def stats():
     conn.close()
 
     return jsonify(rows)
+
+def get_next_progress(exercise, reps):
+    try:
+        reps = int(reps)
+    except:
+        return reps
+
+    # logique simple de progression
+    if reps >= 15:
+        return reps + 2
+    elif reps >= 8:
+        return reps + 1
+    else:
+        return reps
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
