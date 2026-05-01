@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sport Assistant</title>
+</head>
+<body>
+    <h1>🏋️ Assistant Sport</h1>
+
+    <h3>Ajouter une séance</h3>
+
+    <input id="ex" placeholder="Exercice">
+    <input id="reps" placeholder="Reps">
+    <input id="sets" placeholder="Sets">
+    <button onclick="add()">Ajouter</button>
+
+    <h3>Stats</h3>
+    <button onclick="load()">Voir historique</button>
+    <pre id="out"></pre>
+
+<script>
+function add(){
+    fetch("/add", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({
+            exercise: document.getElementById("ex").value,
+            reps: document.getElementById("reps").value,
+            sets: document.getElementById("sets").value
+        })
+    })
+}
+
+function load(){
+    fetch("/stats")
+    .then(r=>r.json())
+    .then(d=>{
+        document.getElementById("out").innerText = JSON.stringify(d,null,2)
+    })
+}
+</script>
+
+</body>
+</html>
