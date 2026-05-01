@@ -1,26 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sport Coach</title>
 </head>
-<body style="font-family: Arial; max-width: 600px; margin: auto;">
 
-<h1>🏋️ Sport Coach</h1>
+<body style="
+    font-family: Arial;
+    margin: 0;
+    padding: 20px;
+    background: #0f172a;
+    color: white;
+">
 
-<h3>Ajouter une séance</h3>
+<div style="max-width: 500px; margin: auto;">
 
-<input id="ex" placeholder="Exercice"><br><br>
-<input id="reps" placeholder="Reps"><br><br>
-<input id="sets" placeholder="Sets"><br><br>
+<h1 style="text-align:center;">🏋️ Sport Coach</h1>
 
-<button onclick="add()">Ajouter</button>
+<div style="background:#1e293b; padding:15px; border-radius:12px;">
 
-<h3>📊 Résultat coach</h3>
-<div id="coach"></div>
+<h3>➕ Ajouter séance</h3>
 
-<h3>📜 Historique</h3>
-<button onclick="load()">Afficher</button>
-<pre id="out"></pre>
+<input id="ex" placeholder="Exercice" style="width:100%; padding:10px; margin:5px 0;"><br>
+
+<input id="reps" placeholder="Reps" style="width:100%; padding:10px; margin:5px 0;"><br>
+
+<input id="sets" placeholder="Sets" style="width:100%; padding:10px; margin:5px 0;"><br>
+
+<button onclick="add()" style="
+    width:100%;
+    padding:12px;
+    background:#22c55e;
+    border:none;
+    color:white;
+    border-radius:8px;
+    margin-top:10px;
+">
+Ajouter
+</button>
+
+</div>
+
+<div id="coach" style="margin-top:15px; font-size:18px;"></div>
+
+<div style="margin-top:20px;">
+<button onclick="load()" style="
+    width:100%;
+    padding:12px;
+    background:#3b82f6;
+    border:none;
+    color:white;
+    border-radius:8px;
+">
+Voir historique
+</button>
+
+<pre id="out" style="white-space:pre-wrap; background:#1e293b; padding:10px; border-radius:10px; margin-top:10px;"></pre>
+</div>
+
+</div>
 
 <script>
 function add(){
@@ -36,7 +74,7 @@ function add(){
     .then(r => r.json())
     .then(data => {
         document.getElementById("coach").innerHTML =
-        "👉 Prochaine recommandation : " + data.next_recommended_reps + " reps 💪"
+        "💪 Prochaine cible : <b>" + data.next_recommended_reps + " reps</b>"
     })
 }
 
