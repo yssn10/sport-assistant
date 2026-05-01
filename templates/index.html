@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sport Assistant</title>
+    <title>Sport Coach</title>
 </head>
-<body>
-    <h1>🏋️ Assistant Sport</h1>
+<body style="font-family: Arial; max-width: 600px; margin: auto;">
 
-    <h3>Ajouter une séance</h3>
+<h1>🏋️ Sport Coach</h1>
 
-    <input id="ex" placeholder="Exercice">
-    <input id="reps" placeholder="Reps">
-    <input id="sets" placeholder="Sets">
-    <button onclick="add()">Ajouter</button>
+<h3>Ajouter une séance</h3>
 
-    <h3>Stats</h3>
-    <button onclick="load()">Voir historique</button>
-    <pre id="out"></pre>
+<input id="ex" placeholder="Exercice"><br><br>
+<input id="reps" placeholder="Reps"><br><br>
+<input id="sets" placeholder="Sets"><br><br>
+
+<button onclick="add()">Ajouter</button>
+
+<h3>📊 Résultat coach</h3>
+<div id="coach"></div>
+
+<h3>📜 Historique</h3>
+<button onclick="load()">Afficher</button>
+<pre id="out"></pre>
 
 <script>
 function add(){
@@ -28,13 +33,19 @@ function add(){
             sets: document.getElementById("sets").value
         })
     })
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById("coach").innerHTML =
+        "👉 Prochaine recommandation : " + data.next_recommended_reps + " reps 💪"
+    })
 }
 
 function load(){
     fetch("/stats")
     .then(r=>r.json())
     .then(d=>{
-        document.getElementById("out").innerText = JSON.stringify(d,null,2)
+        document.getElementById("out").innerText =
+        JSON.stringify(d, null, 2)
     })
 }
 </script>
